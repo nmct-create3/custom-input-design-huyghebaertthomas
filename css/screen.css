@@ -777,6 +777,22 @@ input::placeholder {
   transition: all 0.3s 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
+.c-toggle-list__item {
+  margin-bottom: 12px;
+}
+
+.c-toggle-list__item + .c-toggle-list__item {
+  padding-top: 12px;
+  border-top: 1px solid var(--global-input-borderColor);
+}
+
+.c-toggle__label--inverted {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 100%;
+  justify-content: space-between;
+}
+
 /*
     Component: Label
     ---
