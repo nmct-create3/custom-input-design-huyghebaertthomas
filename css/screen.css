@@ -69,7 +69,7 @@
   --global-whitespace-xxl: calc(var(--global-whitespace) * 3);
   /*  = 72px */
 
-  --global-input-backgroundColor: White;
+  --global-input-backgroundColor-light: White;
   --global-input-color: var(--global-color-neutral-xxxx-dark);
   --global-input-borderColor: var(--global-color-neutral-xxx-light);
   --global-input-hover-borderColor: var(--global-color-neutral-xx-light);
@@ -82,6 +82,18 @@
   --global-color-blue-400: #3385ff;
   --global-color-blue-500: #2e77e6;
   --global-color-blue-600: #1b4186;
+
+  --global-page-color: var(--global-color-neutral-xxxx-dark);
+  --global-page-backgroundColor: var(--global-color-neutral-xxxx-light);
+  --global-page-tileColor: White;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --global-page-color: White;
+    --global-page-backgroundColor: var(--global-color-neutral-xxxx-dark);
+    --global-page-tileColor: var(--global-color-neutral-xxx-dark);
+  }
 }
 
 /*------------------------------------*\
@@ -97,8 +109,8 @@
 html {
   line-height: 1.5;
   font-family: "Inter Web", Helvetica, arial, sans-serif;
-  color: var(--global-color-neutral-xxxx-dark);
-  background-color: var(--global-color-neutral-xxxx-light);
+  color: var(--global-page-color);
+  background-color: var(--global-page-backgroundColor);
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -526,20 +538,28 @@ input::placeholder {
   margin-bottom: var(--global-whitespace-xl);
 }
 
+@media (prefers-color-scheme: dark) {
+  .c-logo {
+    --logo__path--1--fill: White;
+    --logo__path--2--fill: var(--logo__path--1--fill);
+    --logo__path--3--fill: var(--logo__path--1--fill);
+  }
+}
+
 .c-logo__symbol {
   height: 100%;
 }
 
 .c-logo__path--1 {
-  fill: var(--global-color-neutral-xxxx-dark);
+  fill: var(--logo__path--1--fill, var(--global-color-neutral-xxxx-dark));
 }
 
 .c-logo__path--2 {
-  fill: var(--global-color-alpha);
+  fill: var(--logo__path--2--fill, var(--global-color-alpha));
 }
 
 .c-logo__path--3 {
-  fill: var(--global-color-alpha-x-dark);
+  fill: var(--logo__path--3--fill, var(--global-color-alpha-x-dark));
 }
 
 /*
@@ -549,7 +569,7 @@ input::placeholder {
 */
 
 .c-card {
-  background-color: White;
+  background-color: var(--global-page-tileColor);
   margin-bottom: var(--global-whitespace);
   border-radius: var(--global-borderRadius);
   box-shadow: 0 0 0 var(--global-borderWidth) rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.075);
@@ -564,7 +584,14 @@ input::placeholder {
 
 .c-card__footer {
   text-align: center;
-  border-top: var(--global-borderWidth) solid var(--global-color-neutral-xxx-light);
+  border-top: var(--global-borderWidth) solid
+    var(--footer-border-color, var(--global-color-neutral-xxx-light));
+}
+
+@media (prefers-color-scheme: dark) {
+  .c-card__footer {
+    --footer-border-color: var(--global-color-neutral-xxxx-dark);
+  }
 }
 
 .c-card__title {
@@ -615,10 +642,9 @@ input::placeholder {
   -moz-appearance: none;
   appearance: none;
   width: 100%;
-  border: var(--global-borderWidth) solid var(--global-input-borderColor);
-  background-color: var(--global-input-backgroundColor);
-  color: var(--global-input-color);
-  background-color: White;
+  border: var(--global-borderWidth) solid var(--input-borderColor, var(--global-input-borderColor));
+  background-color: var(--input-backgroundColor, var(--global-input-backgroundColor-light));
+  color: var(--input-textColor, var(--global-color-neutral-xx-dark));
   font-family: inherit;
   font-size: 16px;
   line-height: calc(var(--global-baseline) * 3);
@@ -626,6 +652,15 @@ input::placeholder {
     var(--global-whitespace-md);
   outline: none;
   transition: border var(--global-transition-timing-alpha);
+  border-radius: var(--global-borderRadius);
+}
+
+@media (prefers-color-scheme: dark) {
+  .c-input {
+    --input-backgroundColor: var(--global-color-neutral-xxxx-dark);
+    --input-borderColor: var(--global-color-neutral-xxxx-dark);
+    --input-textColor: var(--global-color-neutral-x-light);
+  }
 }
 
 .c-input:hover {
@@ -663,7 +698,7 @@ input::placeholder {
 }
 
 .c-option--hidden:checked + .c-custom-option .c-custom-option__symbol {
-  fill: var(--global-color-blue-400);
+  fill: var(--option-symbol-color, var(--global-color-blue-400));
   opacity: 1;
 }
 
@@ -679,10 +714,18 @@ input::placeholder {
   display: flex;
   width: 16px;
   height: 16px;
-  border: 1px solid var(--global-input-borderColor);
+  border: 1px solid var(--checkbox-border-color, var(--global-input-borderColor));
   margin-right: 8px;
   justify-content: center;
   align-items: center;
+  background-color: var(--checkbox-background-color, White);
+}
+
+@media (prefers-color-scheme: dark) {
+  .c-custom-option__fake-input {
+    --checkbox-background-color: var(--global-color-neutral-xxxx-dark);
+    --checkbox-border-color: var(--global-color-neutral-xxxx-dark);
+  }
 }
 
 .c-custom-option {
@@ -698,7 +741,14 @@ input::placeholder {
 .c-custom-option__fake-input--checkbox .c-custom-option__symbol {
   width: 10px;
   height: 10px;
-  fill: var(--global-color-alpha);
+  fill: var(--option-symbol-color, var(--global-color-blue-400));
+}
+
+@media (prefers-color-scheme: dark) {
+  .c-option--hidden:checked + .c-custom-option .c-custom-option__symbol,
+  .c-custom-option__fake-input--checkbox .c-custom-option__symbol {
+    --option-symbol-color: white;
+  }
 }
 
 .c-custom-option__fake-input--radio .c-custom-option__symbol {
@@ -804,7 +854,13 @@ input::placeholder {
   font-size: 14px;
   padding-bottom: var(--global-whitespace-xs);
   line-height: calc(var(--global-baseline) * 2);
-  color: var(--global-color-neutral-xx-dark);
+  color: var(--label-color, var(--global-color-neutral-xx-dark));
+}
+
+@media (prefers-color-scheme: dark) {
+  .c-label {
+    --label-color: var(--global-color-neutral-x-light);
+  }
 }
 
 .c-label--option {
